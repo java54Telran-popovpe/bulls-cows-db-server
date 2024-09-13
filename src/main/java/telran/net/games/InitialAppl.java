@@ -15,7 +15,7 @@ public class InitialAppl {
 		EntityManagerFactory emFactory = new HibernatePersistenceProvider()
 				.createContainerEntityManagerFactory(new BullsCowsPersistenceUnitInfo(), map);
 		EntityManager em = emFactory.createEntityManager();
-		Gamer gamer = em.find(Gamer.class, "gamer1");
+		Game gamer = em.find(Game.class, 1031);
 		System.out.println(gamer);
 
 	}
