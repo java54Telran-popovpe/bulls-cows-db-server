@@ -27,9 +27,17 @@ public class InitialAppl {
 //		List<Integer> list =
 //				repository.getBullsInMovesGamersBornAfter(LocalDate.ofYearDay(2000, 1));
 //		displayResult(list);
-		List<MinMaxAmount> list = 
-				repository.getDistributionGamesMoves(6);
-		displayResult(list);
+//		List<MinMaxAmount> list = 
+//				repository.getDistributionGamesMoves(6);
+//		displayResult(list);
+		List<Game> res = repository.getGamesWithAverageGamerAgeGreaterThen(60);
+		displayResult(res);
+//		List<GameAndMoves> res = repository.getGameAndMovesOfWinnerInLessThen(5);
+//		displayResult(res);
+//		List<String> res = repository.getGamerNameMadeMovesLessThen(2);
+//		displayResult(res);
+//		List<GameAndAvgMoves> res = repository.getGamesWithAvgMovesNumber();
+//		displayResult(res);
 
 	}
 
