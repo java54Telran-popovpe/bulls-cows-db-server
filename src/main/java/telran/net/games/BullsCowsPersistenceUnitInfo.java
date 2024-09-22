@@ -58,6 +58,7 @@ public class BullsCowsPersistenceUnitInfo implements PersistenceUnitInfo {
 		ds.setPassword("1234.com");
 		ds.setUsername("postgres");
 		ds.setDriverClassName("org.postgresql.Driver");
+		ds.setSchema("test");
 		return ds;
 	}
 

@@ -14,7 +14,6 @@ public class Move {
 	private int bulls;
 	private int cows;
 	@ManyToOne
-	@JoinColumn(name="game_gamer_id")
 	private GameGamer gameGamer;
 	
 	public Move() {
