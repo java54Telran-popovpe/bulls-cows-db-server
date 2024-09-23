@@ -17,7 +17,7 @@ public class RepositoryTest {
 	static {
 		HashMap<String, Object> hibernateProperties = new HashMap<>();
 		hibernateProperties.put("hibernate.hbm2ddl.auto", "create");
-		repository = new BullsCowsRepositoryJpa(new BullsCowsPersistenceUnitInfo(), hibernateProperties);
+		repository = new BullsCowsRepositoryJpa(new BullsCowsTestPercictenceUnitInfo(), hibernateProperties);
 	}
 	static long gameId;
 	static String gamerUsername = "gamer1";
