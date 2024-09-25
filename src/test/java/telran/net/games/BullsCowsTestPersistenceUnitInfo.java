@@ -4,8 +4,10 @@ import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariDataSource;
 
+import telran.net.games.config.BullsCowsPersistenceUnitInfo;
 
-public class BullsCowsTestPercictenceUnitInfo extends BullsCowsPersistenceUnitInfo {
+
+public class BullsCowsTestPersistenceUnitInfo extends BullsCowsPersistenceUnitInfo {
 	public DataSource getNonJtaDataSource() {
 		HikariDataSource ds = new HikariDataSource();
 		ds.setJdbcUrl("jdbc:h2:mem:testdb");

@@ -11,13 +11,20 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import telran.net.games.entities.Game;
+import telran.net.games.entities.Gamer;
+import telran.net.games.model.MoveData;
+import telran.net.games.model.MoveDto;
+import telran.net.games.repo.BullsCowsRepository;
+import telran.net.games.repo.BullsCowsRepositoryJpa;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RepositoryTest {
 	static BullsCowsRepository repository;
 	static {
 		HashMap<String, Object> hibernateProperties = new HashMap<>();
 		hibernateProperties.put("hibernate.hbm2ddl.auto", "create");
-		repository = new BullsCowsRepositoryJpa(new BullsCowsTestPercictenceUnitInfo(), hibernateProperties);
+		repository = new BullsCowsRepositoryJpa(new BullsCowsTestPersistenceUnitInfo(), hibernateProperties);
 	}
 	static long gameId;
 	static String gamerUsername = "gamer1";

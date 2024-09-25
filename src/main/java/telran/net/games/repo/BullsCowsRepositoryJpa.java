@@ -1,4 +1,4 @@
-package telran.net.games;
+package telran.net.games.repo;
 
 import java.time.*;
 import java.util.*;
@@ -7,11 +7,17 @@ import org.hibernate.jpa.*;
 
 import jakarta.persistence.*;
 import jakarta.persistence.spi.*;
+import telran.net.games.entities.Game;
+import telran.net.games.entities.GameGamer;
+import telran.net.games.entities.Gamer;
+import telran.net.games.entities.Move;
 import telran.net.games.exceptions.GameGamerAlreadyExistsException;
 import telran.net.games.exceptions.GameGamerNotFoundException;
 import telran.net.games.exceptions.GameNotFoundException;
 import telran.net.games.exceptions.GamerAlreadyExistsException;
 import telran.net.games.exceptions.GamerNotFoundException;
+import telran.net.games.model.MoveData;
+import telran.net.games.model.MoveDto;
 
 public class BullsCowsRepositoryJpa implements BullsCowsRepository {
 	

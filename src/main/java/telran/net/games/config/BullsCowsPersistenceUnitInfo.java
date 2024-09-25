@@ -1,7 +1,5 @@
-package telran.net.games;
+package telran.net.games.config;
 
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
@@ -12,9 +10,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import jakarta.persistence.SharedCacheMode;
 import jakarta.persistence.ValidationMode;
-import jakarta.persistence.spi.ClassTransformer;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
+import jakarta.persistence.spi.*;
 
 public class BullsCowsPersistenceUnitInfo implements PersistenceUnitInfo {
 
@@ -83,10 +79,10 @@ public class BullsCowsPersistenceUnitInfo implements PersistenceUnitInfo {
 	@Override
 	public List<String> getManagedClassNames() {
 		
-		return List.of("telran.net.games.Gamer",
-				"telran.net.games.Game",
-				"telran.net.games.GameGamer",
-				"telran.net.games.Move");
+		return List.of("telran.net.games.entities.Gamer",
+				"telran.net.games.entities.Game",
+				"telran.net.games.entities.GameGamer",
+				"telran.net.games.entities.Move");
 	}
 
 	@Override
