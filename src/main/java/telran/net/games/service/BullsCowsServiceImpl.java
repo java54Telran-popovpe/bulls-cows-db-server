@@ -136,6 +136,7 @@ public class BullsCowsServiceImpl implements BullsCowsService {
 	 * GameNotFoundException
 	 */
 	public List<String> getGameGamers(long gameId) {
+		bcRepository.getGame(gameId);
 		return bcRepository.getGameGamers(gameId);
 	}
 	/**
