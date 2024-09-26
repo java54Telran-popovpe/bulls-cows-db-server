@@ -101,9 +101,7 @@ public class BullsCowsServiceImpl implements BullsCowsService {
 	public List<MoveData> moveProcessing(String sequence, long gameId, String username) {
 		checkMakingMovePossibility(sequence, gameId);
 		MoveData moveData = bcRunner.moveProcessing(sequence, bcRepository.getGame(gameId).getSequence());
-		
 		bcRepository.createGameGamerMove(new MoveDto(gameId, username, sequence, moveData.bulls(), moveData.cows()));
-		
 		if ( bcRunner.checkGameFinished(moveData) ) {
 			bcRepository.setIsFinished(gameId);
 			bcRepository.setWinner(gameId, username);
@@ -121,7 +119,6 @@ public class BullsCowsServiceImpl implements BullsCowsService {
 		if ( bcRepository.isGameFinished(gameId)) {
 			throw new GameFinishedException(gameId);
 		}
-		
 	}
 	@Override
 	/**
