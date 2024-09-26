@@ -123,9 +123,10 @@ public class BullsCowsRepositoryJpa implements BullsCowsRepository {
 
 	@Override
 	public void createGameGamer(long gameId, String username) {
-		try {
+		
 			Game game = getGame(gameId);
 			Gamer gamer = getGamer(username);
+		try {
 			GameGamer gameGamer = new GameGamer(false, game, gamer);
 			createObject(gameGamer);
 		} catch (Exception e) {
