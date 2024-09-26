@@ -99,30 +99,18 @@ public class BullsCowsServiceImpl implements BullsCowsService {
 	 * GameFinishedException
 	 */
 	public List<MoveData> moveProcessing(String sequence, long gameId, String username) {
-		checkMakingMovePossibility(sequence, gameId, username);
+		checkMakingMovePossibility(sequence, gameId);
 		MoveData moveData = bcRunner.moveProcessing(sequence, bcRepository.getGame(gameId).getSequence());
+		
+		bcRepository.createGameGamerMove(new MoveDto(gameId, username, sequence, moveData.bulls(), moveData.cows()));
 		
 		if ( bcRunner.checkGameFinished(moveData) ) {
 			bcRepository.setIsFinished(gameId);
 			bcRepository.setWinner(gameId, username);
 		}
-			
-		bcRepository.createGameGamerMove(new MoveDto(gameId, username, sequence, moveData.bulls(), moveData.cows()));
-		
 		return bcRepository.getAllGameGamerMoves(gameId, username);
 	}
-	private void checkMakingMovePossibility(String sequence, long gameId, String username) {
-		if ( bcRepository.getGame(gameId) == null ) {
-			throw new GameNotFoundException(gameId);
-		}
-		
-		if ( bcRepository.getGamer(username) == null ) {
-			throw new GamerNotFoundException(username);
-		}
-		
-		if ( !bcRepository.getGameGamers(gameId).contains(username) ) {
-			throw new GameGamerNotFoundException(gameId, username);
-		}
+	private void checkMakingMovePossibility(String sequence, long gameId) {
 		
 		if ( !bcRunner.checkGuess(sequence) ) {
 			throw new IncorrectMoveSequenceException(sequence);
