@@ -20,6 +20,7 @@ import telran.net.games.entities.Gamer;
 import telran.net.games.exceptions.GameAlreadyStartedException;
 import telran.net.games.exceptions.GameFinishedException;
 import telran.net.games.exceptions.GameNotStartedException;
+import telran.net.games.exceptions.GamerNotFoundException;
 import telran.net.games.exceptions.IncorrectMoveSequenceException;
 import telran.net.games.exceptions.NoGamerInGameException;
 import telran.net.games.model.MoveData;
@@ -48,7 +49,7 @@ class BullsCowsServiceTest {
 	static String gamerUsername = "gamer1";
 	static String gameSequence;
 	@Test
-	@Order(1)
+	@Order(10)
 	void createGameTest() {
 		gameId = bcService.createGame();
 		gameSequence = ((BullsCowsServiceImpl)bcService).getSequence(gameId);
@@ -71,7 +72,7 @@ class BullsCowsServiceTest {
 	}
 	
 	@Test
-	@Order(2)
+	@Order(20)
 	void registerGamerTest() {
 		bcService.registerGamer(gamerUsername, LocalDate.of(1990, 4, 8));
 		Gamer gamer = repository.getGamer(gamerUsername);
@@ -79,43 +80,53 @@ class BullsCowsServiceTest {
 	}
 	
 	@Test
-	@Order(3)
+	@Order(30)
 	void startGameWithoutGamerTest() {
 		assertThrowsExactly(NoGamerInGameException.class, () -> bcService.startGame(gameId));
 		gameNotStarted();
 	}
 	
 	@Test
-	@Order(4)
+	@Order(40)
 	void joinGamerTest() {
 		assertEquals(0, bcService.getGameGamers(gameId).size());
 		bcService.gamerJoinGame(gameId, gamerUsername);
 		assertIterableEquals(List.of(gamerUsername),bcService.getGameGamers(gameId) );
 	}
+	@Test
+	@Order(45)
+	void getNotStartedGamesWithGamerTestBeforeGameStart() {
+		assertIterableEquals(List.of(gameId), bcService.getNotStartedGamesWithGamer(gamerUsername));
+		assertThrowsExactly(GamerNotFoundException.class, () -> bcService.getNotStartedGamesWithGamer(gamerUsername + "1"));
+	}
 	
 	@Test
-	@Order(5)
+	@Order(50)
 	void makeMoveInNonstartedGameTest() {
 		assertThrowsExactly( GameNotStartedException.class,
 				() -> bcService.moveProcessing(getNonWinningSequence(), gameId, gamerUsername));
 	}
 	
 	@Test
-	@Order(6)
+	@Order(60)
 	void startGameTest() {
 		bcService.startGame(gameId);
 		gameStarted();
 	}
-	
 	@Test
-	@Order(7)
+	@Order(65)
+	void getNotStartedGamesWithGamerTestAfterGameStart() {
+		assertIterableEquals(List.of(), bcService.getNotStartedGamesWithGamer(gamerUsername));
+	}
+	@Test
+	@Order(70)
 	void startAlreadyStartedGameTest() {
 		assertThrowsExactly(GameAlreadyStartedException.class, () -> bcService.startGame(gameId));
 		
 	}
 	
 	@Test
-	@Order(8)
+	@Order(80)
 	void movesTest() {
 		List<MoveData> moveDataList = new LinkedList<>();
 		for ( int i = 0; i < N_CORRECT_MOVES; i++) {

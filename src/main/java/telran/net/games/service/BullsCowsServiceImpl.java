@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import telran.net.games.entities.Game;
+import telran.net.games.entities.*;
 import telran.net.games.exceptions.GameAlreadyStartedException;
 import telran.net.games.exceptions.GameFinishedException;
 import telran.net.games.exceptions.GameGamerNotFoundException;
@@ -150,6 +150,28 @@ public class BullsCowsServiceImpl implements BullsCowsService {
 	String getSequence(long gameId) {
 		Game game = bcRepository.getGame(gameId);
 		return game.getSequence();
+	}
+	
+	@Override
+	//returns id’s of not started games with a given username
+	public List<Long> getNotStartedGamesWithGamer(String username) {
+		bcRepository.getGamer(username); //only for possible exception GamerNotFount
+		return bcRepository.getUnfinishedGamesBasedOnUser(username, true, true);
+	}
+	@Override
+	public List<Long> getNotStartedGamesWithNoGamer(String username) {
+		bcRepository.getGamer(username); //only for possible exception GamerNotFount
+		return bcRepository.getUnfinishedGamesBasedOnUser(username, true, false);
+	}
+	@Override
+	public List<Long> getStartedGamesWithGamer(String username) {
+		bcRepository.getGamer(username); //only for possible exception GamerNotFount
+		return bcRepository.getUnfinishedGamesBasedOnUser(username, false, true);
+	}
+	@Override
+	public String loginGamer(String username) {
+		Gamer gamer = bcRepository.getGamer(username);
+		return gamer.getUsername();
 	}
 	
 }

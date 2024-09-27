@@ -174,4 +174,15 @@ public class BullsCowsRepositoryJpa implements BullsCowsRepository {
 		return gameGamer.isWinner();
 	}
 
+	@Override
+	public List<Long> getUnfinishedGamesBasedOnUser(String username, boolean gamesNotStartedFlag,
+			boolean userJoinedFlag) {
+		String queryString = "select distinct g.id from Game g left join GameGamer gg on gg.game.id = g.id  where g.isFinished = false and " 
+								+ (userJoinedFlag ? " gg.gamer.username=?1 " : "( gg.gamer.username<>?1 or gg.gamer.username is null) " )
+								+ "and g.dateTime is "
+								+ (gamesNotStartedFlag ? "" : "not") 
+								+ " null";
+		TypedQuery<Long> query = em.createQuery(queryString, Long.class);
+		return query.setParameter(1, username).getResultList();
+	}
 }

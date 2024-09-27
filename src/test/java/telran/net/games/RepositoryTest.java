@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import telran.net.games.entities.Game;
 import telran.net.games.entities.Gamer;
+import telran.net.games.exceptions.GamerNotFoundException;
 import telran.net.games.model.MoveData;
 import telran.net.games.model.MoveDto;
 import telran.net.games.repo.BullsCowsRepository;
@@ -24,12 +25,14 @@ public class RepositoryTest {
 	static {
 		HashMap<String, Object> hibernateProperties = new HashMap<>();
 		hibernateProperties.put("hibernate.hbm2ddl.auto", "create");
+		hibernateProperties.put("hibernate.show_sql", "true");
+		hibernateProperties.put("hibernate.format_sql", "true");
 		repository = new BullsCowsRepositoryJpa(new BullsCowsTestPersistenceUnitInfo(), hibernateProperties);
 	}
 	static long gameId;
 	static String gamerUsername = "gamer1";
 	@Test
-	@Order(1)
+	@Order(10)
 	void createGameTest() {
 		gameId = repository.createNewGame("1234");
 		Game game = repository.getGame(gameId);
@@ -39,34 +42,46 @@ public class RepositoryTest {
 		
 	}
 	@Test
-	@Order(2)
+	@Order(20)
 	void createGamerTest() {
 		repository.createNewGamer(gamerUsername, LocalDate.of(2000, 1, 1));
 		Gamer gamer = repository.getGamer(gamerUsername);
 		assertNotNull(gamer);
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,true, true));
+		assertIterableEquals(List.of(gameId), repository.getUnfinishedGamesBasedOnUser(gamerUsername,true, false));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,false, false));
 		
 	}
-	@Order(3)
+	
+	@Order(30)
 	@Test
 	void createGameGamerTest() {
 		repository.createGameGamer(gameId, gamerUsername);
 		List<String> gamers = repository.getGameGamers(gameId);
 		assertEquals(1, gamers.size());
 		assertEquals(gamerUsername, gamers.get(0));
+		assertIterableEquals(List.of(gameId), repository.getUnfinishedGamesBasedOnUser(gamerUsername,true, true));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,false, true));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,true, false));
+		
 	}
-	@Order(4)
+	
+	@Order(50)
 	@Test
 	void isGameStartedTest() {
 		assertFalse(repository.isGameStarted(gameId));
 	}
-	@Order(5)
+	@Order(60)
 	@Test
 	void setStartDateTest() {
 		repository.setStartDate(gameId, LocalDateTime.now());
 		assertTrue(repository.isGameStarted(gameId));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,true, true));
+		assertIterableEquals(List.of(gameId), repository.getUnfinishedGamesBasedOnUser(gamerUsername,false, true));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,false, false));
 	}
 	
-	@Order(6)
+	@Order(70)
 	@Test
 	void createGameGamerMoveAllGameGamersMovesTest() {
 		repository.createGameGamerMove(new MoveDto(gameId, gamerUsername, "1243", 2, 2));
@@ -76,23 +91,26 @@ public class RepositoryTest {
 		assertEquals(new MoveData("1243", 2, 2), moves.get(0));
 		assertEquals(new MoveData("1234", 4, 0), moves.get(1));
 	}
-	@Order(7)
+	@Order(80)
 	@Test
 	void isGameFinishedTest() {
 		assertFalse(repository.isGameFinished(gameId));
 	}
-	@Order(8)
+	@Order(90)
 	@Test
 	void setIsFinishedTest() {
 		repository.setIsFinished(gameId);
 		assertTrue(repository.isGameFinished(gameId));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,true, true));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,false, true));
+		assertIterableEquals(List.of(), repository.getUnfinishedGamesBasedOnUser(gamerUsername,false, false));
 	}
-	@Order(9)
+	@Order(100)
 	@Test
 	void isWinnerTest() {
 		assertFalse(repository.isWinner(gameId, gamerUsername));
 	}
-	@Order(10)
+	@Order(110)
 	@Test
 	void setWinnerTest() {
 		repository.setWinner(gameId, gamerUsername);
