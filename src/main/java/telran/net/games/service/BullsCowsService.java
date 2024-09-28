@@ -6,6 +6,7 @@ import java.util.*;
 import telran.net.games.model.MoveData;
 
 public interface BullsCowsService {
+int N_DIGITS = 4;
 long createGame();//returns ID of the created game
 List<String> startGame(long gameId); //returns list of user (gamer) names
 void registerGamer(String username, LocalDate birthDate);

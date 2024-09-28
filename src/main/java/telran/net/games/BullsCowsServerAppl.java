@@ -12,7 +12,7 @@ import telran.net.games.service.*;
 public class BullsCowsServerAppl {
 
 	private static final int PORT = 5000;
-	private static final int N_DIGITS = 4;
+	private static final int N_DIGITS = telran.net.games.service.BullsCowsService.N_DIGITS;
 
 	public static void main(String[] args) {
 		Protocol bullsCowsProtocol = getBullsCowsProtocol();
